@@ -107,7 +107,7 @@ model Card {
   updatedAt          DateTime      @updatedAt
 }
 
-model Credits {
+model Credit {
   id         Int      @id @default(autoincrement())
   type       String
   rate       Float

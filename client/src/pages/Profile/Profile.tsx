@@ -21,17 +21,18 @@ function Profile(props: ProfileProps) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    console.log('zxc', user)
-    console.log(localStorage.getItem('token'))
-    if (!user) {
-      console.log('aby')
-      navigate('/')
-    }
-  }, [user])
+  // useEffect(() => {
+  //   console.log('zxc', user)
+  //   console.log(localStorage.getItem('token'))
+  //   if (!localStorage.getItem('token')) {
+  //     console.log('aby')
+  //     navigate('/')
+  //   }
+  // }, [user])
   //
-  function logOut() {
-    dispatch(logoutAuth())
+  async function logOut() {
+    await dispatch(logoutAuth())
+    navigate('/')
   }
 
   // useEffect(() => {
