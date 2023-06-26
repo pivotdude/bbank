@@ -1,23 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectModel } from '@nestjs/sequelize';
-import { User } from './user.model';
+import { PrismaService } from '../prisma/prisma.service';
+import { Client } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User) private userRepository: typeof User) {}
+  constructor(private readonly prismaService: PrismaService) {}
+  private readonly model = this.prismaService.client;
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const salt = await bcrypt.genSalt();
+    createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
+
+    const user = await this.model.findFirst({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+
+    if (user) throw new ConflictException('User already exists');
+
+    return this.model.create({
+      data: createUserDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAll(): Promise<Client[]> {
+    return this.model.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: number): Promise<Client> {
+    return this.model.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  findOneByEmail(email: string): Promise<Client> {
+    return this.model.findFirst({
+      where: {
+        email,
+      },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -25,6 +52,10 @@ export class UserService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.model.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

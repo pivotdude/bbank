@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "ATM" ALTER COLUMN "balance" SET DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Card" ADD COLUMN     "balance" INTEGER NOT NULL DEFAULT 0;

@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Passport {
+  id               Int        @id @default(autoincrement())
+  serialAndNumber  Int        @unique
+  birthPlace       String
+  dateOfIssue      DateTime
+  issuingAuthority String
+  client           Client?
+  Employee         Employee[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  users       Client[]
+  createdAt   DateTime @default(now())
+}
+
+model Client {
+  id          Int       @id @default(autoincrement())
+  FCS         String?
+  email       String    @unique
+  password    String
+  inn         Int?
+  phone       String?
+  dateOfBirth DateTime?
+  workPlace   String?
+  address     String?
+  status      Boolean   @default(true)
+  passport    Passport? @relation(fields: [passportId], references: [id])
+  account     Account[]
+  passportId  Int?      @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Role        Role      @relation(fields: [roleId], references: [id])
+  roleId      Int       @default(1)
+}
+
+// User
+// Employee
+// Admin
+
+model Post {
+  id           Int        @id @default(autoincrement())
+  name         String
+  salary       Float
+  description  String?
+  requirements String?
+  duties       String?
+  employees    Employee[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Employee {
+  id          Int      @id @default(autoincrement())
+  FC          String
+  inn         Int
+  phone       String
+  email       String
+  dateOfBirth DateTime
+  address     String
+  post        Post     @relation(fields: [postId], references: [id])
+  passport    Passport @relation(fields: [passportId], references: [id])
+  postId      Int
+  passportId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Account {
+  id        Int       @id @default(autoincrement())
+  status    Boolean   @default(true)
+  closeDate DateTime?
+  client    Client    @relation(fields: [clientId], references: [id])
+  cards     Card[]
+  loans     Loan[]
+  clientId  Int       @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Card {
+  id                 Int           @id @default(autoincrement())
+  name               String
+  cardNumber         String
+  expirationDate     String
+  cvv                Int
+  account            Account       @relation(fields: [accountId], references: [id])
+  accountId          Int
+  balance            Int           @default(0)
+  LoanPayment        LoanPayment[]
+  TransactionsSender Transaction[] @relation("senderCard")
+  TransactionsGetter Transaction[] @relation("getterCard")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model Credits {
+  id         Int      @id @default(autoincrement())
+  type       String
+  rate       Float
+  term       String
+  conditions String?
+  loans      Loan[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Loan {
+  id              Int           @id @default(autoincrement())
+  account         Account       @relation(fields: [accountId], references: [id])
+  credit          Credit        @relation(fields: [creditId], references: [id])
+  time            DateTime
+  initialSum      Float
+  dueForRepayment Float
+  term            String
+  monthlyPayment  Float
+  overpayment     Float
+  aim             String?
+  loanPayments    LoanPayment[]
+  accountId       Int
+  creditId        Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Exchange {
+  id           Int      @id @default(autoincrement())
+  name         String
+  purchaseRate Float
+  saleRate     Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model LoanPayment {
+  id            Int      @id @default(autoincrement())
+  paymentAmount Float
+  card          Card?    @relation(fields: [cardId], references: [id])
+  loan          Loan     @relation(fields: [loanId], references: [id])
+  cardId        Int?
+  loanId        Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ATM {
+  id        Int      @id @default(autoincrement())
+  location  String
+  openDate  DateTime
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id           Int      @id @default(autoincrement())
+  sum          Float
+  status       String
+  senderCard   Card     @relation("senderCard", fields: [senderCardId], references: [id])
+  senderCardId Int
+  getterCard   Card     @relation("getterCard", fields: [getterCardId], references: [id])
+  getterCardId Int
+  fee          Float?
+  description  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
