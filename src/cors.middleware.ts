@@ -1,7 +1,7 @@
-import { MiddlewareFunction, NestMiddleware } from '@nestjs/common';
+import { NestMiddleware } from '@nestjs/common';
 
-export class CorsMiddleware implements NestMiddleware {
-  resolve(): MiddlewareFunction {
+export class CorsMiddleware {
+  resolve(): any {
     return (req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
