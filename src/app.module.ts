@@ -7,12 +7,14 @@ import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './auth/roles.guard';
 import { AccountModule } from './account/account.module';
 import { CardModule } from './card/card.module';
+import { CorsMiddleware } from './cors.middleware';
 
 @Module({
   controllers: [AppController],
   providers: [
     AppService,
     PrismaService,
+    CorsMiddleware,
     {
       provide: 'ROLES_GUARD',
       useClass: RolesGuard,
