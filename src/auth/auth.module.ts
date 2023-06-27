@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './roles.guard';
 import { PrismaService } from '../prisma/prisma.service';
 import { AccountService } from "../account/account.service";
+import { CorsMiddleware } from 'src/cors.middleware';
 
 
 @Module({
@@ -24,6 +25,7 @@ import { AccountService } from "../account/account.service";
     }),
   ],
   providers: [
+    CorsMiddleware,
     AuthService,
     {
       provide: APP_GUARD,
@@ -34,7 +36,7 @@ import { AccountService } from "../account/account.service";
       useClass: RolesGuard,
     },
     PrismaService,
-    AccountService
+    AccountService,
   ],
   controllers: [AuthController],
   exports: [AuthService],
