@@ -5,14 +5,13 @@ import { SignInDto } from './dto/SignIn.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { Client } from '@prisma/client';
-import { SignUpDto } from "./dto/SignUp.dto";
-import { AccountService } from "../account/account.service";
+import { SignUpDto } from './dto/SignUp.dto';
+import { AccountService } from '../account/account.service';
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    private accountService: AccountService
   ) {}
 
   async signIn(signInDto: SignInDto) {
@@ -28,17 +27,20 @@ export class AuthService {
     const AuthUser = await this.userService.findOne(user.id);
     const payload = { sub: user.id, username: user.email };
     return {
-      user: AuthUser,
-      status: true,
+      // user: AuthUser,
+      // status: true,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
 
   async signUp(signUpDto: SignUpDto) {
     delete signUpDto.repeatPassword;
-    const user = await this.userService.create(signUpDto);
-    console.log(user)
-    console.log(await this.accountService.create({ clientId: user.id }));
-    return user
+    // await this.accountService.create({ clientId: user.id })
+    const user = this.userService.create(signUpDto);
+    if (user) {
+      return { status: true };
+    } else {
+      return { status: false };
+    }
   }
 }

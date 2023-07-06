@@ -8,8 +8,7 @@ import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './roles.guard';
 import { PrismaService } from '../prisma/prisma.service';
-import { AccountService } from "../account/account.service";
-
+import { AccountService } from '../account/account.service';
 
 @Module({
   imports: [

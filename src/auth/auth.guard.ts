@@ -40,8 +40,7 @@ export class AuthGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
 
-
-      console.log('payload', payload)
+      console.log('payload', payload);
 
       request['user'] = await this.prismaService.client.findFirst({
         where: {
@@ -51,8 +50,8 @@ export class AuthGuard implements CanActivate {
           Role: true,
         },
       });
-      console.log('sad', request['user'])
-      request['userId'] = payload.sub
+      console.log('sad', request['user']);
+      request['userId'] = payload.sub;
     } catch {
       throw new UnauthorizedException();
     }

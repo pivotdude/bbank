@@ -10,7 +10,7 @@ import { CardModule } from './card/card.module';
 import { CorsMiddleware } from './cors.middleware';
 import { PrismaModule } from './prisma/prisma.module';
 import { MailModule } from './mail/mail.module';
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   controllers: [AppController],
@@ -22,10 +22,16 @@ import { ConfigModule } from "@nestjs/config";
       useClass: RolesGuard,
     },
   ],
-  imports: [UserModule, AuthModule, AccountModule, CardModule, PrismaModule, MailModule,
+  imports: [
+    UserModule,
+    AuthModule,
+    AccountModule,
+    CardModule,
+    PrismaModule,
+    MailModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
-      isGlobal: true
+      isGlobal: true,
     }),
   ],
 })

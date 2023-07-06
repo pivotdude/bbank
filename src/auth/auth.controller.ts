@@ -5,8 +5,10 @@ import {
   HttpCode,
   HttpStatus,
   Get,
-  Request, UsePipes, ValidationPipe
-} from "@nestjs/common";
+  Request,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/SignIn.dto';
 import { SignUpDto } from './dto/SignUp.dto';
@@ -14,15 +16,13 @@ import { Public } from './pubilc.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
-    console.log(signInDto)
+    console.log(signInDto);
     return this.authService.signIn(signInDto);
   }
 
@@ -35,7 +35,7 @@ export class AuthController {
 
   @Get('profile')
   getUser(@Request() req) {
-    console.log('reqUser', req.user)
+    console.log('reqUser', req.user);
     return req.user;
   }
 }

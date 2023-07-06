@@ -1,4 +1,5 @@
-import { SetMetadata } from '@nestjs/common';import { CorsMiddleware } from 'src/cors.middleware';
+import { SetMetadata } from '@nestjs/common';
+import { CorsMiddleware } from 'src/cors.middleware';
 
 import { RolesT } from '../Models';
 
