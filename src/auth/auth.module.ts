@@ -9,14 +9,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './roles.guard';
 import { PrismaService } from '../prisma/prisma.service';
 import { AccountService } from "../account/account.service";
-import { CorsMiddleware } from 'src/cors.middleware';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-    }),
     UserModule,
     JwtModule.register({
       global: true,
@@ -25,7 +21,6 @@ import { CorsMiddleware } from 'src/cors.middleware';
     }),
   ],
   providers: [
-    CorsMiddleware,
     AuthService,
     {
       provide: APP_GUARD,
