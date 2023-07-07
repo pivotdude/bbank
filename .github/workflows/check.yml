@@ -15,7 +15,7 @@ jobs:
             - name: Prettier check
               run: yarn check
     test:
-      needs: [ lint ]
+      needs: [ check ]
       runs-on: ubuntu-latest
       steps:
         - name: Checkout
