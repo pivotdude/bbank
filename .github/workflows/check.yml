@@ -13,7 +13,7 @@ jobs:
             - name: Lint check
               run: yarn lint
             - name: Prettier check
-              run: yarn check
+              run: yarn pr:check
     test:
       needs: [ check ]
       runs-on: ubuntu-latest
