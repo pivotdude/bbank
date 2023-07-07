@@ -49,7 +49,7 @@ jobs:
             MAIL_URL: ${{ secrets.MAIL_URL }}
           run: |
             touch .env
-            echo "NODE_ENV=MAIL_URL" > .env
+            echo "MAIL_URL=$MAIL_URL" > .env
         - name: Build
           run: yarn build
         - name: Start
