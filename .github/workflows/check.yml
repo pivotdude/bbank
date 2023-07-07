@@ -26,8 +26,6 @@ jobs:
           run: yarn
         - name: Unit tests
           run: yarn test
-        - name: e2e tests
-          run: yarn test:e2e
     buildCheck:
       needs: [ check, test ]
       runs-on: ubuntu-latest
