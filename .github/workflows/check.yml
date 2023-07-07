@@ -46,7 +46,7 @@ jobs:
           run: yarn
         - name: Create .env file
           env:
-            MY_SECRET: ${{ secrets.MAIL_URL }}
+            MAIL_URL: ${{ secrets.MAIL_URL }}
           run: |
             touch .env
             echo "NODE_ENV=MAIL_URL" > .env
